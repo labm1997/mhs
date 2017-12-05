@@ -2,7 +2,6 @@ package br.unb.cic.tp1.mh.ast
 
 import br.unb.cic.tp1.mh.memoria.Ambiente
 import org.scalatest._
-import br.unb.cic.tp1.mh.ast.ExpSoma
 
 class TesteAplicacaoLambda extends FlatSpec with Matchers {
 
@@ -10,7 +9,7 @@ class TesteAplicacaoLambda extends FlatSpec with Matchers {
   
   it should "be evaluated to Valor(6) when ((x) -> x + 1) 5)" in {
     Ambiente.iniciar()
-    val inc = new ExpLambda("x", TInt(),new ExpSoma(new ExpRef("x"), ValorInteiro(1)))
+    val inc = new ExpLambda("x", TInt(), new ExpSoma(new ExpRef("x"), ValorInteiro(1)))
     val app = new ExpAplicacaoLambda(inc, ValorInteiro(5)) 
 
     app.avaliar() should be (ValorInteiro(6))

@@ -13,6 +13,62 @@ class PPVisitor extends Visitor {
     sb.append(exp.valor.toString)
   }
 
+  override def visitar(exp: ExpSoma): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '+'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpSub): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '-'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpMult): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '*'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpDiv): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '/'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpAnd): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '&'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpOr): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '|'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpMaiorQue): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '>'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
   override def visitar(exp: ExpLet): Unit = { }
 
   override def visitar(exp: ExpLambda): Unit = { }
@@ -25,37 +81,4 @@ class PPVisitor extends Visitor {
 
   override def visitar(exp: Closure): Unit = { }
   
-  override def visitar(exp: ExpBool): Unit = { }
-  override def visitar(exp: ExpSoma): Unit = {
-  
-    sb += '('
-    exp.lhs.aceitar(this)
-    sb += '+'
-    exp.rhs.aceitar(this)
-    sb += ')'
-  }
-  override def visitar(exp: ExpDiv): Unit = {
-  
-    sb += '('
-    exp.lhs.aceitar(this)
-    sb += '+'
-    exp.rhs.aceitar(this)
-    sb += ')'
-  }
-  override def visitar(exp: ExpMult): Unit = {
-  
-    sb += '('
-    exp.lhs.aceitar(this)
-    sb += '+'
-    exp.rhs.aceitar(this)
-    sb += ')'
-  }
-  override def visitar(exp: ExpSub): Unit = {
-  
-    sb += '('
-    exp.lhs.aceitar(this)
-    sb += '+'
-    exp.rhs.aceitar(this)
-    sb += ')'
-  }
 }

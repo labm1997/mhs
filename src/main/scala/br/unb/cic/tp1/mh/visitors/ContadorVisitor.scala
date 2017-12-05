@@ -8,6 +8,44 @@ class ContadorVisitor extends Visitor {
   override def visitar(exp: ValorInteiro): Unit = contador += 1
 
   override def visitar(exp: ValorBooleano): Unit = contador += 1
+  
+  override def visitar(exp: ExpSoma): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  
+  override def visitar(exp: ExpSub): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  
+  override def visitar(exp: ExpMult): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  override def visitar(exp: ExpDiv): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  override def visitar(exp: ExpAnd): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  override def visitar(exp: ExpOr): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  override def visitar(exp: ExpMaiorQue): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
 
   override def visitar(exp: ExpLet): Unit = {
     exp.expNomeada.aceitar(this)
@@ -35,41 +73,6 @@ class ContadorVisitor extends Visitor {
 
   override def visitar(exp: Closure): Unit = {
     exp.corpo.aceitar(this)
-    contador += 1
-  }
-  
-  override def visitar(exp: ExpAnd): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
-    contador += 1
-  }
-  override def visitar(exp: ExpOr): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
-    contador += 1
-  }
-  
-  override def visitar(exp: ExpSoma): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
-    contador += 1
-  }
-  
-  override def visitar(exp: ExpSub): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
-    contador += 1
-  }
-  
-  override def visitar(exp: ExpMult): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
-    contador += 1
-  }
-  
-  override def visitar(exp: ExpDiv): Unit = {
-    exp.lhs.aceitar(this)
-    exp.rhs.aceitar(this)
     contador += 1
   }
 }
