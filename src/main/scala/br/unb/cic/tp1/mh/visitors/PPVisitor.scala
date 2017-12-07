@@ -104,7 +104,7 @@ class PPVisitor extends Visitor {
     exp.exp2.aceitar(this)
     sb ++= "} => {"
     exp.exp1.aceitar(this)
-    sb ++= "}"
+    sb ++= "}" 
   }
 
   override def visitar(exp: ExpAplicacaoNomeada): Unit = { }
