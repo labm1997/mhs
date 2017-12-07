@@ -9,7 +9,11 @@ class ExpLet(val id : String, val expNomeada : Expressao, val corpo : Expressao)
 override def avaliar(): Valor = {
     val valor = expNomeada.avaliar() // innermost strategy
     Ambiente.atualiza(id, valor)
-    return corpo.avaliar()
+    //println("vou avaliar o corpo: " + corpo)
+    val ret = corpo.avaliar()
+    //println("vou retirar: " + id)
+    Ambiente.retirar(id)
+    return ret
   }
 
   override def verificaTipo: Tipo = {

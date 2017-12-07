@@ -85,15 +85,33 @@ class PPVisitor extends Visitor {
     sb += ')'
   }
 
-  override def visitar(exp: ExpLet): Unit = { }
+  override def visitar(exp: ExpLet): Unit = { 
+    sb ++= "let " + exp.id + "="
+    exp.expNomeada.aceitar(this)
+    sb ++= " in {"
+    exp.corpo.aceitar(this)  
+    sb ++= "}"
+  }
 
-  override def visitar(exp: ExpLambda): Unit = { }
+  override def visitar(exp: ExpLambda): Unit = { 
+    sb ++= "L " + exp.id + ":" + exp.tipoArgumento + " {"
+    exp.corpo.aceitar(this)
+    sb ++= "}"
+  }
 
-  override def visitar(exp: ExpAplicacaoLambda): Unit = { }
+  override def visitar(exp: ExpAplicacaoLambda): Unit = { 
+    sb ++= "App {"
+    exp.exp2.aceitar(this)
+    sb ++= "} => {"
+    exp.exp1.aceitar(this)
+    sb ++= "}"
+  }
 
   override def visitar(exp: ExpAplicacaoNomeada): Unit = { }
 
-  override def visitar(exp: ExpRef): Unit = { }
+  override def visitar(exp: ExpRef): Unit = { 
+    sb ++= "ExpRef(" + exp.variavel + ")"
+  }
 
   override def visitar(exp: Closure): Unit = { }
     

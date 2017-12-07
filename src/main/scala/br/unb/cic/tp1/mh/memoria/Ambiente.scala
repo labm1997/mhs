@@ -27,13 +27,31 @@ object Ambiente {
       stack.push(new mutable.HashMap[String, Valor])
     }
     stack.top += (variavel -> valor)
+    //println("atualizando ambiente: " + stack)
+  }
+  
+  def retirar(variavel: String) {
+    //println("retirada antes: " + stack)
+    if(!stack.isEmpty) {
+      stack.top -= variavel
+      //println("retirada depois: " + stack)
+    }
+    else {
+      //println("Falha ao retirar " + variavel)
+      throw VariavelNaoDeclaradaException()
+    }
+    
   }
 
   def consulta(variavel : String) : Valor = {
+    //println("consulta: " + stack)
     if(!stack.isEmpty) {
       return stack.top(variavel)
     }
-    throw VariavelNaoDeclaradaException()
+    else {
+      //println("Falha ao encontrar " + variavel)
+      throw VariavelNaoDeclaradaException()
+    }
   }
 
   def novoAmbiente(): Unit = {

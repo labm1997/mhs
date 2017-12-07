@@ -12,7 +12,10 @@ case class ExpRef(variavel : String) extends Expressao {
       return Ambiente.consulta(variavel)
     }
     catch {
-      case ex: NoSuchElementException => throw VariavelNaoDeclaradaException()
+      case ex: NoSuchElementException => {
+        println("Falha ao encontrar " + variavel)
+        throw VariavelNaoDeclaradaException()
+      }
     }
   }
 

@@ -54,4 +54,14 @@ class TesteExpLet extends FlatSpec with Matchers {
        let.avaliar()
     }
   }
+
+  it should "be evaluated to Valor(300) when let x = 10 in let y = 20 in x*(x+y)" in {
+    Ambiente.iniciar()
+    val let1 = new ExpLet("y", ValorInteiro(20),
+      new ExpMult(new ExpRef("x"), new ExpSoma(ExpRef("x"),ExpRef("y"))))
+
+    val let2 = new ExpLet("x", ValorInteiro(10), let1)
+
+    let2.avaliar() should be (ValorInteiro(300))
+  }
 }
