@@ -69,6 +69,22 @@ class PPVisitor extends Visitor {
     sb += ')'
   }
 
+  override def visitar(exp: ExpMenorQue): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '<'
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
+  override def visitar(exp: ExpIgual): Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb += '='
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+
   override def visitar(exp: ExpLet): Unit = { }
 
   override def visitar(exp: ExpLambda): Unit = { }
@@ -80,5 +96,5 @@ class PPVisitor extends Visitor {
   override def visitar(exp: ExpRef): Unit = { }
 
   override def visitar(exp: Closure): Unit = { }
-  
+    
 }

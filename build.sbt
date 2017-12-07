@@ -1,5 +1,6 @@
 import Dependencies._
 
+parallelExecution in test := false
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
@@ -8,5 +9,6 @@ lazy val root = (project in file(".")).
       version      := "0.1.0-SNAPSHOT"
     )),
     name := "Hello",
-    libraryDependencies += scalaTest % Test
+    libraryDependencies += scalaTest % Test,
+    libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6"
   )

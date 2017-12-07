@@ -47,6 +47,20 @@ class ExpMaiorQue(lhs: Expressao, rhs: Expressao)
   }
 }
 
+class ExpMenorQue(lhs: Expressao, rhs: Expressao) 
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean](lhs,rhs,ExpOperacoes.menorQue) {
+  override def aceitar(v: Visitor): Unit = {
+    v.visitar(this)
+  }
+}
+
+class ExpIgual(lhs: Expressao, rhs: Expressao) 
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean](lhs,rhs,ExpOperacoes.igual) {
+  override def aceitar(v: Visitor): Unit = {
+    v.visitar(this)
+  }
+}
+
 
 trait ExpOperacao[V,T] {
   def operacao(v1: V, v2: V): T
@@ -114,6 +128,6 @@ abstract class ExpBinaria[V <: Valor : ClassTag,T,G <: Tipo : ClassTag, TipoCons
       return classTag[G].runtimeClass.newInstance.asInstanceOf[G]
     }
     return TErro()
-  }
+  }  
 }
 

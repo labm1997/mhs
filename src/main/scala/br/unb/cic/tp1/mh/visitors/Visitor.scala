@@ -13,11 +13,12 @@ trait Visitor {
   def visitar(exp: ExpAnd) : Unit
   def visitar(exp: ExpOr) : Unit
   def visitar(exp: ExpMaiorQue) : Unit
+  def visitar(exp: ExpMenorQue) : Unit
+  def visitar(exp: ExpIgual) : Unit
   def visitar(exp: ExpLet) : Unit
   def visitar(exp: ExpLambda) : Unit
   def visitar(exp: ExpAplicacaoLambda) : Unit
   def visitar(exp: ExpAplicacaoNomeada) : Unit
   def visitar(exp: ExpRef) : Unit
   def visitar(exp: Closure) : Unit
-
 }

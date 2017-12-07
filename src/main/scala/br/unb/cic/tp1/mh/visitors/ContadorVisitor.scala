@@ -46,6 +46,16 @@ class ContadorVisitor extends Visitor {
     exp.rhs.aceitar(this)
     contador += 1
   }
+  override def visitar(exp: ExpMenorQue): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
+  override def visitar(exp: ExpIgual): Unit = {
+    exp.lhs.aceitar(this)
+    exp.rhs.aceitar(this)
+    contador += 1
+  }
 
   override def visitar(exp: ExpLet): Unit = {
     exp.expNomeada.aceitar(this)
@@ -75,4 +85,4 @@ class ContadorVisitor extends Visitor {
     exp.corpo.aceitar(this)
     contador += 1
   }
-}
+  }
