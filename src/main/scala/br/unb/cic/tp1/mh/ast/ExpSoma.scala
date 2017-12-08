@@ -4,58 +4,58 @@ import br.unb.cic.tp1.mh.visitors.Visitor
 import scala.reflect.ClassTag
 import scala.reflect._
 
-class ExpSoma(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer](lhs,rhs,ExpOperacoes.soma) {
+class ExpSoma(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer,ValorInteiro](lhs,rhs,ExpOperacoes.soma) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
-class ExpSub(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer](lhs,rhs,ExpOperacoes.subtracao) {
+class ExpSub(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer,ValorInteiro](lhs,rhs,ExpOperacoes.subtracao) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
-class ExpMult(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer](lhs,rhs,ExpOperacoes.multiplicacao) {
+class ExpMult(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer,ValorInteiro](lhs,rhs,ExpOperacoes.multiplicacao) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
-class ExpDiv(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer](lhs,rhs,ExpOperacoes.divisao) {
+class ExpDiv(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorInteiro,Int,TInt,java.lang.Integer,ValorInteiro](lhs,rhs,ExpOperacoes.divisao) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
-class ExpAnd(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorBooleano,Boolean,TBool,java.lang.Boolean](lhs,rhs,ExpOperacoes.and) {
+class ExpAnd(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorBooleano,Boolean,TBool,java.lang.Boolean, ValorBooleano](lhs,rhs,ExpOperacoes.and) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
-class ExpOr(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorBooleano,Boolean,TBool,java.lang.Boolean](lhs,rhs,ExpOperacoes.or) {
+class ExpOr(lhs: Expressao, rhs: Expressao) extends ExpBinaria[ValorBooleano,Boolean,TBool,java.lang.Boolean, ValorBooleano](lhs,rhs,ExpOperacoes.or) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
 class ExpMaiorQue(lhs: Expressao, rhs: Expressao) 
-  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean](lhs,rhs,ExpOperacoes.maiorQue) {
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean, ValorBooleano](lhs,rhs,ExpOperacoes.maiorQue) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
 class ExpMenorQue(lhs: Expressao, rhs: Expressao) 
-  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean](lhs,rhs,ExpOperacoes.menorQue) {
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean, ValorBooleano](lhs,rhs,ExpOperacoes.menorQue) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
 }
 
 class ExpIgual(lhs: Expressao, rhs: Expressao) 
-  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean](lhs,rhs,ExpOperacoes.igual) {
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean, ValorBooleano](lhs,rhs,ExpOperacoes.igual) {
   override def aceitar(v: Visitor): Unit = {
     v.visitar(this)
   }
@@ -103,7 +103,7 @@ object Instanciador {
   }
 }
 
-abstract class ExpBinaria[V <: Valor : ClassTag,T,G <: Tipo : ClassTag, TipoConstrutor : ClassTag](lhsConstructor : Expressao, rhsConstructor : Expressao, injecao: ExpOperacao[V,T]) extends Expressao {
+abstract class ExpBinaria[V <: Valor : ClassTag,T,G <: Tipo : ClassTag, TipoConstrutor : ClassTag, Saida <: Valor : ClassTag](lhsConstructor : Expressao, rhsConstructor : Expressao, injecao: ExpOperacao[V,T]) extends Expressao {
   
   var lhs = lhsConstructor
   var rhs = rhsConstructor
@@ -116,7 +116,7 @@ abstract class ExpBinaria[V <: Valor : ClassTag,T,G <: Tipo : ClassTag, TipoCons
     val arg = Instanciador.instanciar(classTag[TipoConstrutor].runtimeClass, injecao.operacao(v1,v2).asInstanceOf[AnyRef])
     
     /* Instanciamos ValorInteiro ou ValorBooleano a partir do argumento gerado */
-    return Instanciador.instanciar(classTag[V].runtimeClass, arg).asInstanceOf[V]
+    return Instanciador.instanciar(classTag[Saida].runtimeClass, arg).asInstanceOf[Saida]
     
   }
 
