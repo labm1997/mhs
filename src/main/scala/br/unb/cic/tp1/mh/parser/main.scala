@@ -14,13 +14,13 @@ object MyParsers extends RegexParsers {
   val ident: Parser[String] = """[a-zA-Z_]\w*""".r
 } 
 class ExprParser extends StandardTokenParsers {   
-  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}","==","&&",">","<",",")
+  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}","==","&&","||",">","<",",")
   lexical.reserved ++= List("let","in","L","Int","Bool","App","true","false","def")
   
   def value = numericLit ^^ {s => ValorInteiro(s.toInt)} | ident ^^ {s => new ExpRef(s)}
   def factor: Parser[Expressao] = (value | "(" ~ expr ~ ")" ^^ { 
     case "(" ~ x ~ ")" => x 
-    case _ => throw ExpressaoInvalida()
+    case _ => throw ExpressaoInvalida() 
   })
   
   def term = (multdiv | value)
