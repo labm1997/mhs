@@ -12,9 +12,11 @@ object MyParsers extends RegexParsers {
   val ident: Parser[String] = """[a-zA-Z_]\w*""".r
 } 
 class ExprParser extends StandardTokenParsers {   
-  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}")
+  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}","<",">")
   lexical.reserved ++= List("let","in","L","Int","Bool","App")
   
+  // Aqui acredito que precisa de um value com ValorBooleano pq só existe pra interio e esta dando problemas, tentei fazer um 
+  // mas não deu certo
   def value = numericLit ^^ {s => ValorInteiro(s.toInt)} | ident ^^ {s => new ExpRef(s)}
   def factor: Parser[Expressao] = (value | "(" ~ expr ~ ")" ^^ { 
     case "(" ~ x ~ ")" => x 
@@ -44,6 +46,29 @@ class ExprParser extends StandardTokenParsers {
       rep
     }
   }
+  // Fiz esses pra testar, mas não deu certo, não sei pq, tambem não deu erro nem warning, por isso não entendi pq não funcionou
+  // se vc puder me dar uma clareza, eu acho que q talvez é pq ta faltando o value booleano
+  def maiormenor: Parser[Expressao] = factor ~ rep(">" ~ factor | "<" ~ factor) ^^ { 
+    case left ~ right => {
+      var rep = left
+      right.foreach(rel => rel match { 
+        case ">" ~ r => rep = new ExpMaiorQue(rep,r)
+        case "<" ~ r => rep = new ExpMenorQue(rep,r)
+        case _ => throw ExpressaoInvalida()
+      })
+      rep
+    }
+  }
+  def igual: Parser[Expressao] = factor ~ rep("=" ~ factor) ^^ { 
+    case left ~ right => {
+      var rep = left
+      right.foreach(rel => rel match { 
+        case "=" ~ r => rep = new ExpIgual(rep,r)
+        case _ => throw ExpressaoInvalida()
+      })
+      rep
+    }
+  }
   
   def corpo = "{" ~ expr ~ "}" ^^ {case "{" ~ expr ~ "}" => expr case _ => throw ExpressaoInvalida()} | expr
     
@@ -55,7 +80,7 @@ class ExprParser extends StandardTokenParsers {
   
   def tipo: Parser[Tipo] = "Int" ^^ ( x => TInt()) | "Bool" ^^ ( x => TBool())
   
-  def expr = (sumsub | multdiv | value | let | lambda | lambdaAPP)
+  def expr = (sumsub | multdiv | maiormenor | igual | value | let | lambda | lambdaAPP)
   
   def parse(s: String) = {
     val tokens = new lexical.Scanner(s)
