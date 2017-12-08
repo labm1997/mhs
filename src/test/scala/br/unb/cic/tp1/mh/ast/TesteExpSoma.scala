@@ -54,7 +54,51 @@ class TesteExpSoma extends FlatSpec with Matchers  {
     and.avaliar() should be (ValorBooleano(false))
   
   }
+  // teste do or funcionou
+  "A bool true or a bool false" should "be evaluated to Valor(true)" in {
+    val valt  = ValorBooleano(true)
+    val valf = ValorBooleano(false)
 
- 
+    val or = new ExpOr(valt, valf)
+
+    or.avaliar() should be (ValorBooleano(true))
+  
+  }
+  //Esses teste estão dando o msm problema, por envolverem variaveis inteiras e booleanas, mas não entendi
+  // o pq. Vc fez o ExpBinaria e funcionou direitinho, mas quando eu chamo esses 3 aqui eles dão o erro
+  // java.lang.IllegalArgumentException: argument type mismatch dizendo que os tipos estão misturados
+  // olhei o instaciador que vc fez e parece que ele esta fazendo uma mistura entre V que recebe o int, e 
+  // T que é bool
+  
+  // Quando eu peguei o primeiro parser que vc fez, eu consegui chamar o ExpMaiorQue, mas la tambem deu o msm erro que aqui
+  "A integer value 10 > an integer value 2" should "be evaluated to Valor(true)" in {
+    val valt  = ValorInteiro(10)
+    val valf = ValorInteiro(2)
+
+    val maior = new ExpMaiorQue(valt, valf)
+
+    maior.avaliar() should be (ValorBooleano(true))
+  
+  }
+  
+  "A integer value 7 < an integer value 5" should "be evaluated to Valor(false)" in {
+    val valt  = ValorInteiro(7)
+    val valf = ValorInteiro(5)
+
+    val menor = new ExpMenorQue(valt, valf)
+
+    menor.avaliar() should be (ValorBooleano(false))
+  
+  }
+  
+  "A integer value 7 = an integer value 7" should "be evaluated to Valor(true)" in {
+    val valt  = ValorInteiro(7)
+    val valf = ValorInteiro(7)
+
+    val igual = new ExpIgual(valt, valf)
+
+    igual.avaliar() should be (ValorBooleano(true))
+  
+  }
 
 }
