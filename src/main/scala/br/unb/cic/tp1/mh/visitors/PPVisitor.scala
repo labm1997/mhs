@@ -118,5 +118,7 @@ class PPVisitor extends Visitor {
   }
 
   override def visitar(exp: Closure): Unit = { }
+  
+  override def visitar(exp: ExpIfthenElse): Unit = { }
     
 }
