@@ -108,8 +108,9 @@ class PPVisitor extends Visitor {
   }
 
   override def visitar(exp: ExpAplicacaoNomeada): Unit = {
-    sb ++= exp.nome + "(" + exp.argumentosAtual.head
-    exp.argumentosAtual.tail.foreach(arg => sb ++= "," + arg)
+    sb ++= exp.nome + "("
+    exp.argumentosAtual.head.aceitar(this)
+    exp.argumentosAtual.tail.foreach(arg => {sb ++= ","; arg.aceitar(this)})
     sb ++= ")"
   }
 

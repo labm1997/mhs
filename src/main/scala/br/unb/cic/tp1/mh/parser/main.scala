@@ -63,7 +63,7 @@ class ExprParser extends StandardTokenParsers {
   def factor: Parser[Expressao] = value | "(" ~ expr ~ ")" ^^ { 
     case "(" ~ x ~ ")" => x 
     case _ => throw ExpressaoInvalida() 
-  } | nonSumExpr ^^ {x => x}
+  } ||| nonSumExpr ^^ {x => x}
   
   /*def factor: Parser[Expressao] = (value | "(" ~ expr ~ ")" ^^ { 
     case "(" ~ x ~ ")" => x 
