@@ -1,6 +1,7 @@
 package br.unb.cic.tp1.mh.ast
 
 import br.unb.cic.tp1.mh.memoria.Ambiente
+import br.unb.cic.tp1.mh.tc.Gamma
 import br.unb.cic.tp1.mh.visitors.Visitor
 import scala.collection.mutable.ListBuffer
 
@@ -33,6 +34,7 @@ class ExpAplicacaoNomeada(val nome: String, val argumentosAtual : ListBuffer[Exp
     /* Argumentos com tipos incorretos */
     for(arg <- argumentosAtual.zipWithIndex){
       if(!decFuncao.argsFormal(arg._2)._2.equals(arg._1.verificaTipo)) return TErro()
+      Gamma.mapear(decFuncao.argsFormal(arg._2)._1, decFuncao.argsFormal(arg._2)._2)
     }
     
     /* Retorna o tipo do corpo */

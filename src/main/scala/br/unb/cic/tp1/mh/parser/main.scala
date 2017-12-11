@@ -144,7 +144,7 @@ class ExprParser extends StandardTokenParsers {
     new ExpAplicacaoNomeada(id,args.map(arg => arg match {case a ~ r => a}).to[ListBuffer])
   }
   
-  def lambdaAPP: Parser[Expressao] = "App" ~ lambda ~ expr ^^ {case "App" ~ lambda ~ expr => new ExpAplicacaoLambda(lambda,expr)}
+  def lambdaAPP: Parser[Expressao] = "App" ~ expr ~ expr ^^ {case "App" ~ lambda ~ expr => new ExpAplicacaoLambda(lambda,expr)}
   
   def tipo: Parser[Tipo] = "Int" ^^ ( x => TInt()) | "Bool" ^^ ( x => TBool())
   
@@ -188,7 +188,15 @@ object Main extends ExprParser {
               case t: Expressao => {
                 t.aceitar(pp)
                 println(pp.sb)
-                println(t.avaliar)
+                try {
+                  val tipo = t.verificaTipo
+                  print(tipo.nome + ": ")
+                  if(!tipo.equals(TErro())) println(t.avaliar)
+                  else println("Tipos errados")
+                }
+                catch {
+                  case e: NoSuchElementException => println("Variável não declarada: "+ e)
+                }
               }
               case t: DecFuncao => {
                 println("Definido")

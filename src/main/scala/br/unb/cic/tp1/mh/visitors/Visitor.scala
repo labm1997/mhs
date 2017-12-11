@@ -22,4 +22,5 @@ trait Visitor {
   def visitar(exp: ExpRef) : Unit
   def visitar(exp: Closure) : Unit
   def visitar(exp: ExpIfthenElse) : Unit
+  
 }
