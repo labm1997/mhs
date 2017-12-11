@@ -13,7 +13,7 @@ case class ExpRef(variavel : String) extends Expressao {
     }
     catch {
       case ex: NoSuchElementException => {
-        println("Falha ao encontrar " + variavel)
+        //println("Falha ao encontrar " + variavel)
         throw VariavelNaoDeclaradaException()
       }
     }

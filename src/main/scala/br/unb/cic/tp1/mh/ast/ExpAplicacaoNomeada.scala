@@ -9,7 +9,7 @@ class ExpAplicacaoNomeada(val nome: String, val argumentosAtual : ListBuffer[Exp
   override def avaliar(): Valor = {
     val decFuncao = Ambiente.recuperarFuncao(nome)
 
-    Ambiente.novoAmbiente()
+    Ambiente.novoAmbiente(Ambiente.ambienteAtual().clone())
     
     /* Avalia cada argumento passado e salva a referencia no ambiente */
     argumentosAtual.zipWithIndex.foreach(
