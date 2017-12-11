@@ -108,9 +108,8 @@ class PPVisitor extends Visitor {
   }
 
   override def visitar(exp: ExpAplicacaoNomeada): Unit = {
-    sb ++= exp.nome + "("
-    exp.argumentosAtual.head.aceitar(this)
-    exp.argumentosAtual.tail.foreach(arg => {sb ++= ","; arg.aceitar(this)})
+    sb ++= exp.nome + "(" + exp.argumentosAtual.head
+    exp.argumentosAtual.tail.foreach(arg => sb ++= "," + arg)
     sb ++= ")"
   }
 
@@ -120,6 +119,13 @@ class PPVisitor extends Visitor {
 
   override def visitar(exp: Closure): Unit = { }
   
-  override def visitar(exp: ExpIfthenElse): Unit = { }
+  override def visitar(exp: ExpIfthenElse): Unit = {
+    sb ++= "if( "
+    exp.condicao.aceitar(this)
+    sb ++= ") then "
+    exp.verdadeira.aceitar(this)
+    sb ++= "else "
+    exp.falsa.aceitar(this)
+  }
     
 }

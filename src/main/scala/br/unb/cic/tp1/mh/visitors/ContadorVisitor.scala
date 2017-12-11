@@ -85,5 +85,9 @@ class ContadorVisitor extends Visitor {
     exp.corpo.aceitar(this)
     contador += 1
   }
-  override def visitar(exp: ExpIfthenElse): Unit = contador +=1
+  override def visitar(exp: ExpIfthenElse): Unit = {
+    exp.aceitar(this)
+    contador +=1
+  }
+  
   }
