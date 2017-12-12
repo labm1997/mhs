@@ -48,7 +48,7 @@ class ExprParser extends StandardTokenParsers {
     } 
   }
   
-  def term: Parser[Expressao] = "!" ~ factor ^^ {case "!" ~ f => new ExpNot(f)} | factor ~ rep("*" ~ factor | "/" ~ factor | "&&" ~ factor | "||" ~ factor) ^^ { 
+  def term: Parser[Expressao] = "!" ~ factor ^^ {case "!" ~ f => new ExpNot(f) case _ => throw ExpressaoInvalida()} | factor ~ rep("*" ~ factor | "/" ~ factor | "&&" ~ factor | "||" ~ factor) ^^ {
     case left ~ right => {
       var rep = left
       right.foreach(rel => rel match { 
@@ -67,62 +67,6 @@ class ExprParser extends StandardTokenParsers {
     case _ => throw ExpressaoInvalida() 
   } ||| nonSumExpr ^^ {x => x}
   
-  /*def factor: Parser[Expressao] = (value | "(" ~ expr ~ ")" ^^ { 
-    case "(" ~ x ~ ")" => x 
-    case _ => throw ExpressaoInvalida() 
-  })
-  
-  def term: Parser[Expressao] = ( defFuncaoAPP | lambdaAPP | multdiv | value)
-  
-  def boolean: Parser[Expressao] = igual | maiorque | menorque | "true" ^^ {x => new ValorBooleano(true)} | "false" ^^ {x => new ValorBooleano(false)}  | ident ^^ {s => new ExpRef(s)}
-    
-  def sumsub = condicao | term ~ rep("+" ~ term | "-" ~ term) ^^ { 
-    case left ~ right => {
-      var rep = left
-      right.foreach(rel => rel match { 
-        case "+" ~ r => rep = new ExpSoma(rep,r)
-        case "-" ~ r => rep = new ExpSub(rep,r)
-        case _ => throw ExpressaoInvalida()
-      })
-      rep
-    } 
-  }
-  def multdiv: Parser[Expressao] = factor ~ rep("*" ~ factor | "/" ~ factor) ^^ { 
-    case left ~ right => {
-      var rep = left
-      right.foreach(rel => rel match { 
-        case "*" ~ r => rep = new ExpMult(rep,r)
-        case "/" ~ r => rep = new ExpDiv(rep,r)
-        case _ => throw ExpressaoInvalida()
-      })
-      rep
-    }
-  }
-  
-  def arith = sumsub | multdiv
-  
-  def condicao = igual | maiorque | menorque | andor
-  
-  def igual: Parser[Expressao] = (term ~ "==" ~ term) ^^ {case left ~ "==" ~ right => new ExpIgual(left,right)}
-  
-  def maiorque: Parser[Expressao] = (term ~ ">" ~ term) ^^ {case left ~ ">" ~ right => new ExpMaiorQue(left,right)}
-  
-  def menorque: Parser[Expressao] = (term ~ "<" ~ term) ^^ {case left ~ "<" ~ right => new ExpMenorQue(left,right)}
-  
-  def andor: Parser[Expressao] = boolean ~ rep("&&" ~ boolean | "||" ~ boolean | "+" ~ term | "-" ~ term) ^^ { 
-    case left ~ right => {
-      var rep = left
-      right.foreach(rel => rel match { 
-        case "&&" ~ r => rep = new ExpAnd(rep,r)
-        case "||" ~ r => rep = new ExpOr(rep,r)
-        case "+" ~ r => rep = new ExpSoma(rep,r)
-        case "-" ~ r => rep = new ExpSub(rep,r)
-        case _ => throw ExpressaoInvalida()
-      })
-      rep
-    }
-  }*/
-      
   def corpo = "{" ~ expr ~ "}" ^^ {case "{" ~ expr ~ "}" => expr case _ => throw ExpressaoInvalida()} | expr
     
   def let: Parser[Expressao] = "let" ~ ident ~ "=" ~ expr ~ "in" ~ corpo ^^ {case "let" ~ id ~ "=" ~ expNomeada ~ "in" ~ corpo => new ExpLet(id,expNomeada,corpo)}
@@ -144,6 +88,7 @@ class ExprParser extends StandardTokenParsers {
   def defFuncaoAPP: Parser[Expressao] = ident ~ "(" ~ rep(expr ~ opt(",")) ~ ")" ^^ {
     case id ~ "(" ~ args ~ ")" => 
     new ExpAplicacaoNomeada(id,args.map(arg => arg match {case a ~ r => a}).to[ListBuffer])
+    case _ => throw ExpressaoInvalida()
   }
   
   def lambdaAPP: Parser[Expressao] = "App" ~ expr ~ expr ^^ {case "App" ~ lambda ~ expr => new ExpAplicacaoLambda(lambda,expr)}
@@ -204,7 +149,7 @@ object Main extends ExprParser {
                 }
               }
               case t: DecFuncao => {
-                println("Definido")
+                println("Definido: " + t.nome + "(" + t.argsFormal.map(e => e._1 + ":" + e._2.nome).mkString(",") + ")")
               }
             }
           }
