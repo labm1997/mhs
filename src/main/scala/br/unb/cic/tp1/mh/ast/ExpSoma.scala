@@ -61,6 +61,20 @@ class ExpIgual(lhs: Expressao, rhs: Expressao)
   }
 }
 
+class ExpMaiorIgual(lhs: Expressao, rhs: Expressao) 
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean, ValorBooleano, TBool](lhs,rhs,ExpOperacoes.maiorigual) {
+  override def aceitar(v: Visitor): Unit = {
+    v.visitar(this)
+  }
+}
+
+class ExpMenorIgual(lhs: Expressao, rhs: Expressao) 
+  extends ExpBinaria[ValorInteiro, Boolean, TInt, java.lang.Boolean, ValorBooleano, TBool](lhs,rhs,ExpOperacoes.menorigual) {
+  override def aceitar(v: Visitor): Unit = {
+    v.visitar(this)
+  }
+}
+
 
 trait ExpOperacao[V,T] {
   def operacao(v1: V, v2: V): T
@@ -93,6 +107,12 @@ object ExpOperacoes {
   }
   val igual = new ExpOperacao[ValorInteiro, Boolean] {
     def operacao(v1: ValorInteiro, v2: ValorInteiro): Boolean = v1.valor == v2.valor
+  }
+  val maiorigual = new ExpOperacao[ValorInteiro, Boolean] {
+    def operacao(v1: ValorInteiro, v2: ValorInteiro): Boolean = v1.valor >= v2.valor
+  }
+  val menorigual = new ExpOperacao[ValorInteiro, Boolean] {
+    def operacao(v1: ValorInteiro, v2: ValorInteiro): Boolean = v1.valor <= v2.valor
   }
 }
 
