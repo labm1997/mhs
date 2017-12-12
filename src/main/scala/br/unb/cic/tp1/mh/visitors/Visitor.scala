@@ -15,6 +15,8 @@ trait Visitor {
   def visitar(exp: ExpMaiorQue) : Unit
   def visitar(exp: ExpMenorQue) : Unit
   def visitar(exp: ExpIgual) : Unit
+  def visitar(exp: ExpMaiorIgual) : Unit
+  def visitar(exp: ExpMenorIgual) : Unit
   def visitar(exp: ExpLet) : Unit
   def visitar(exp: ExpLambda) : Unit
   def visitar(exp: ExpAplicacaoLambda) : Unit
@@ -22,5 +24,6 @@ trait Visitor {
   def visitar(exp: ExpRef) : Unit
   def visitar(exp: Closure) : Unit
   def visitar(exp: ExpIfthenElse) : Unit
+  def visitar(exp: ExpNot) : Unit
   
 }
