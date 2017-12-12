@@ -64,6 +64,33 @@ class TesteExpSoma extends FlatSpec with Matchers  {
     or.avaliar() should be (ValorBooleano(true))
   
   }
+
+  "A bool !true" should "be evaluated to Valor(false)" in {
+    val valt  = ValorBooleano(true)
+
+    val not = new ExpNot(valt)
+
+    not.avaliar() should be (ValorBooleano(false))
+  
+  }
+
+  "A bool !false" should "be evaluated to Valor(true)" in {
+    val valt  = ValorBooleano(false)
+
+    val not = new ExpNot(valt)
+
+    not.avaliar() should be (ValorBooleano(true))
+  
+  }
+
+  "A bool !false" should "have type TBool" in {
+    val valt  = ValorBooleano(false)
+
+    val not = new ExpNot(valt)
+
+    not.verificaTipo should be (TBool())
+  
+  }
   
   "A integer value 10 > an integer value 2" should "be evaluated to Valor(true)" in {
     val valt  = ValorInteiro(10)

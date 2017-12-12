@@ -146,7 +146,9 @@ class PPVisitor extends Visitor {
   }
   
   override def visitar(exp: ExpNot): Unit = {
-  
+    sb ++= "!("
+    exp.expNot.aceitar(this)
+    sb ++= ")"
   }
     
 }

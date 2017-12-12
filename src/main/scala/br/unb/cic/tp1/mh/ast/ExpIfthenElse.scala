@@ -20,7 +20,7 @@ class ExpIfthenElse(val condicao : Expressao, val verdadeira: Expressao, val fal
     val t2 = verdadeira.verificaTipo
     val t3 = falsa.verificaTipo
     
-    if(t1.equals(TBool) && t2.equals(t3)){
+    if(t1.equals(TBool()) && t2.equals(t3)){
       return t2
     }
     else{

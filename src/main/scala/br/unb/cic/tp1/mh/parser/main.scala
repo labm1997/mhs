@@ -14,20 +14,22 @@ object MyParsers extends RegexParsers {
   val ident: Parser[String] = """[a-zA-Z_]\w*""".r
 } 
 class ExprParser extends StandardTokenParsers {   
-  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}","==","&&","||",">","<",",")
+  lexical.delimiters ++= List("+","-","*","/","(",")","=",":","{","}","==","&&","||",">","<",",",">=","<=","!")
   lexical.reserved ++= List("let","in","L","Int","Bool","App","true","false","def","if","then","else")
   
   def number = numericLit ^^ {s => ValorInteiro(s.toInt)}
   def boolean = "true" ^^ {x => new ValorBooleano(true)} | "false" ^^ {x => new ValorBooleano(false)}
   def value = boolean | number | ident ^^ {s => new ExpRef(s)}
   
-  def cond: Parser[Expressao] = sum ~ rep("==" ~ sum | ">" ~ sum | "<" ~ sum) ^^ {
+  def cond: Parser[Expressao] = sum ~ rep("==" ~ sum | ">" ~ sum | "<" ~ sum | "<=" ~ sum | ">=" ~ sum) ^^ {
     case left ~ right => {
       var rep = left
       right.foreach(rel => rel match {
         case "==" ~ r => rep = new ExpIgual(rep,r)
         case ">" ~ r => rep = new ExpMaiorQue(rep,r)
         case "<" ~ r => rep = new ExpMenorQue(rep,r)
+        case "<=" ~ r => rep = new ExpMenorIgual(rep,r)
+        case ">=" ~ r => rep = new ExpMaiorIgual(rep,r)
         case _ => throw ExpressaoInvalida()
       })
       rep
@@ -46,7 +48,7 @@ class ExprParser extends StandardTokenParsers {
     } 
   }
   
-  def term: Parser[Expressao] = factor ~ rep("*" ~ factor | "/" ~ factor | "&&" ~ factor | "||" ~ factor) ^^ { 
+  def term: Parser[Expressao] = "!" ~ factor ^^ {case "!" ~ f => new ExpNot(f)} | factor ~ rep("*" ~ factor | "/" ~ factor | "&&" ~ factor | "||" ~ factor) ^^ { 
     case left ~ right => {
       var rep = left
       right.foreach(rel => rel match { 
@@ -176,6 +178,7 @@ object Main extends ExprParser {
     var continuar: Boolean = true
     while(continuar){
       val pp = new PPVisitor()
+      val nos = new ContadorVisitor()
       print("mhs> ")
       val line = readLine()
       
@@ -188,6 +191,8 @@ object Main extends ExprParser {
               case t: Expressao => {
                 t.aceitar(pp)
                 println(pp.sb)
+                t.aceitar(nos)
+                println("AST com: " + nos.contador + " nós")
                 try {
                   val tipo = t.verificaTipo
                   print(tipo.nome + ": ")

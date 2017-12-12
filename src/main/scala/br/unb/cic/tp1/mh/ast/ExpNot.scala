@@ -17,8 +17,8 @@ class ExpNot(val expNot : Expressao) extends Expressao {
   override def verificaTipo: Tipo = {
     val t1 = expNot.verificaTipo
     
-    if(t1.equals(TBool)){
-      return t1
+    if(t1.equals(TBool())){
+      return TBool()
     }
     else{
       return TErro()
