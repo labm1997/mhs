@@ -84,6 +84,20 @@ class PPVisitor extends Visitor {
     exp.rhs.aceitar(this)
     sb += ')'
   }
+  override def visitar(exp: ExpMaiorIgual) : Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb ++= ">="
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
+  override def visitar(exp: ExpMenorIgual) : Unit = {
+    sb += '('
+    exp.lhs.aceitar(this)
+    sb ++= "<="
+    exp.rhs.aceitar(this)
+    sb += ')'
+  }
 
   override def visitar(exp: ExpLet): Unit = { 
     sb ++= "let " + exp.id + "="
@@ -129,6 +143,10 @@ class PPVisitor extends Visitor {
     exp.verdadeira.aceitar(this)
     sb ++= "else "
     exp.falsa.aceitar(this)
+  }
+  
+  override def visitar(exp: ExpNot): Unit = {
+  
   }
     
 }
